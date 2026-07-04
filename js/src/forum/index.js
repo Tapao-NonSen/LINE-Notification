@@ -14,12 +14,14 @@ app.initializers.add('tapao-line-notification', () => {
     );
   });
 
-  // Inject LINE column into the Notification Preferences Grid
+  // Inject LINE column into the Notification Preferences Grid only if connected
   extend(NotificationGrid.prototype, 'notificationMethods', function (items) {
-    items.add('line', {
-      name: 'line',
-      icon: 'fab fa-line',
-      label: app.translator.trans('tapao-line-notification.lib.notification.line_driver_label'),
-    });
+    if (app.session.user && app.session.user.attribute('lineUserId')) {
+      items.add('line', {
+        name: 'line',
+        icon: 'fab fa-line',
+        label: app.translator.trans('tapao-line-notification.lib.notification.line_driver_label'),
+      });
+    }
   });
 });

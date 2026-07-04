@@ -69,13 +69,17 @@ class LineNotificationDriver implements NotificationDriverInterface
         return false;
     }
 
-    /**
-     * Register a notification type with this driver.
-     * Required by Flarum\Notification\Driver\NotificationDriverInterface.
-     */
     public function registerType(string $blueprintClass, array $driversEnabledByDefault): void
     {
-        // No custom logic needed here for the LINE driver.
+        $key = User::getNotificationPreferenceKey($blueprintClass::getType(), 'line');
+        $default = in_array('line', $driversEnabledByDefault);
+
+        // Support both Flarum 1.x (registerPreference) and 2.x (addPreference)
+        if (method_exists(User::class, 'addPreference')) {
+            User::addPreference($key, 'boolval', $default);
+        } elseif (method_exists(User::class, 'registerPreference')) {
+            User::registerPreference($key, 'boolval', $default);
+        }
     }
 }
 

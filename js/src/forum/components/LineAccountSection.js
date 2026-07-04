@@ -41,12 +41,7 @@ export default class LineAccountSection extends Component {
     const alert        = this.alert();
 
     return (
-      <fieldset className="SettingsPage-line">
-        <legend>
-          <i className="fab fa-line" />
-          {' '}
-          {app.translator.trans('tapao-line-notification.forum.settings.line_section_heading')}
-        </legend>
+      <div className="LineAccountSection">
 
         {alert && (
           <Alert type={alert.type} dismissible onDismiss={() => this.alert(null)}>
@@ -85,7 +80,7 @@ export default class LineAccountSection extends Component {
             </Button>
           </div>
         )}
-      </fieldset>
+      </div>
     );
   }
 
