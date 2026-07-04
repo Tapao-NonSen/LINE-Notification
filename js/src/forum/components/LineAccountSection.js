@@ -66,9 +66,6 @@ export default class LineAccountSection extends Component {
           </div>
         ) : (
           <div className="Form-group">
-            <p className="helpText">
-              {app.translator.trans('tapao-line-notification.forum.settings.line_linking_description')}
-            </p>
             <Button
               className="Button Button--primary LineAccountSection-btn--line"
               loading={isLoading}
