@@ -1,0 +1,22 @@
+// ─────────────────────────────────────────────────────────────────
+// LINE Notification — Admin Styles
+// ─────────────────────────────────────────────────────────────────
+
+@line-green: #06C755;
+
+.ExtensionPage-settings {
+  // Green accent for credential fields
+  .Form-group {
+    &[data-setting*="tapao-line-notification.login"],
+    &[data-setting*="tapao-line-notification.messaging"] {
+      border-left: 3px solid @line-green;
+      padding-left: 12px;
+    }
+
+    // Branding color fields — subtle visual grouping
+    &[data-setting*="tapao-line-notification.flex"] {
+      border-left: 3px solid #888;
+      padding-left: 12px;
+    }
+  }
+}

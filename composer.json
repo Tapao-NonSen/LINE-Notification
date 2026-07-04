@@ -1,0 +1,38 @@
+{
+    "name": "tapao/line-notification",
+    "description": "Send Flarum forum notifications to users via LINE push messages.",
+    "keywords": ["flarum", "extension", "line", "notification", "push"],
+    "type": "flarum-extension",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tapao",
+            "email": "admin@example.com"
+        }
+    ],
+    "require": {
+        "flarum/core": "^1.8 || ^2.0",
+        "guzzlehttp/guzzle": "^7.0"
+    },
+    "suggest": {
+        "flarum/mentions": "Required for mention notification support via LINE",
+        "flarum/likes": "Required for like notification support via LINE",
+        "flarum/subscriptions": "Required for subscription/new-post notification support via LINE"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tapao\\LineNotification\\": "src/"
+        }
+    },
+    "extra": {
+        "flarum-extension": {
+            "title": "LINE Notification",
+            "category": "feature",
+            "icon": {
+                "name": "fab fa-line",
+                "backgroundColor": "#06C755",
+                "color": "#fff"
+            }
+        }
+    }
+}

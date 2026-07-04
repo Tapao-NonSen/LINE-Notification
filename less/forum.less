@@ -1,0 +1,101 @@
+// ─────────────────────────────────────────────────────────────────
+// LINE Notification — Forum Styles
+// ─────────────────────────────────────────────────────────────────
+
+@line-green:  #06C755;
+@line-dark:   #00B900;
+@ngbc-navy:   #1A237E;
+@ngbc-gold:   #F9A825;
+
+// ─── Account Section Container ───────────────────────────────────
+
+.LineAccountSection {
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+  &-heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: @ngbc-navy;
+    margin-bottom: 12px;
+
+    .fab.fa-line {
+      color: @line-green;
+      font-size: 1.2em;
+    }
+  }
+
+  &-desc {
+    color: #555;
+    font-size: 0.9rem;
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+
+  // ─── Status Row (when connected) ─────────────────────────────
+
+  &-connected {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  &-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: #333;
+    font-weight: 500;
+  }
+
+  &-statusDot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ccc;
+
+    &.connected {
+      background: @line-green;
+      box-shadow: 0 0 0 3px fade(@line-green, 20%);
+    }
+  }
+
+  // ─── Buttons ─────────────────────────────────────────────────
+
+  &-btn {
+    &--line {
+      background-color: @line-green !important;
+      border-color: @line-dark !important;
+      color: #fff !important;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: @line-dark !important;
+      }
+
+      .fab.fa-line {
+        font-size: 1.1em;
+      }
+    }
+  }
+}
+
+// ─── Notification Preferences — LINE column icon ──────────────────
+
+.NotificationGrid-driver[data-driver="line"] {
+  color: @line-green;
+
+  &::before {
+    font-family: "Font Awesome 5 Brands";
+    content: "\f3c1"; // fa-line
+    font-style: normal;
+  }
+}

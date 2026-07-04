@@ -1,0 +1,58 @@
+tapao-line-notification:
+  forum:
+    settings:
+      line_section_heading: "LINE Notification"
+      line_connect_button: "เชื่อมต่อ LINE"
+      line_disconnect_button: "ยกเลิกการเชื่อมต่อ"
+      line_connected_as: "เชื่อมต่อแล้วในชื่อ {name}"
+      line_linking_description: "เชื่อมต่อบัญชี LINE ของคุณเพื่อรับการแจ้งเตือนจากฟอรัมผ่าน LINE"
+      line_disconnect_confirm: "คุณต้องการยกเลิกการเชื่อมต่อบัญชี LINE ใช่หรือไม่?"
+      line_link_success: "เชื่อมต่อบัญชี LINE สำเร็จแล้ว"
+      line_disconnect_success: "ยกเลิกการเชื่อมต่อบัญชี LINE สำเร็จแล้ว"
+      line_error: "เกิดข้อผิดพลาดในการเชื่อมต่อ LINE: {error}"
+  admin:
+    settings:
+      # ข้อมูลรับรอง LINE API
+      line_heading: "LINE Notification"
+      line_login_channel_id_label: "LINE Login Channel ID"
+      line_login_channel_id_help: "Channel ID ของ LINE Login Channel จาก LINE Developers Console"
+      line_login_channel_secret_label: "LINE Login Channel Secret"
+      line_login_channel_secret_help: "Channel Secret ของ LINE Login Channel"
+      line_messaging_token_label: "Messaging API Channel Access Token"
+      line_messaging_token_help: "Channel Access Token ของ Messaging API Channel (Long-lived)"
+      line_messaging_channel_secret_label: "Messaging API Channel Secret"
+      line_messaging_channel_secret_help: "Channel Secret ของ Messaging API Channel (ใช้สำหรับตรวจสอบ Webhook Signature)"
+      # การปรับแต่ง Flex Message
+      flex_header_color_label: "สีส่วนหัว Flex Message"
+      flex_header_color_help: "สีพื้นหลังของแถบส่วนหัวในการแจ้งเตือน ค่าเริ่มต้น: #06C755 (LINE Green)"
+      flex_button_color_label: "สีปุ่ม Flex Message"
+      flex_button_color_help: "สีของปุ่มกดในการแจ้งเตือน ค่าเริ่มต้น: #06C755 (LINE Green)"
+      flex_title_color_label: "สีหัวข้อ Flex Message"
+      flex_title_color_help: "สีของข้อความหัวข้อการสนทนาในส่วนเนื้อหา ค่าเริ่มต้น: #111111"
+  lib:
+    notification:
+      line_driver_label: "LINE"
+    line_message:
+      # หัวข้อประเภทการแจ้งเตือน
+      notification_postMentioned: "💬 มีคนกล่าวถึงโพสต์ของคุณ"
+      notification_userMentioned: "📣 มีคนกล่าวถึงคุณ"
+      notification_postLiked: "❤️ มีคนถูกใจโพสต์ของคุณ"
+      notification_newPost: "🔔 มีโพสต์ใหม่ในการสนทนาที่คุณติดตาม"
+      notification_privateDiscussion: "✉️ คุณได้รับข้อความส่วนตัว"
+      notification_default: "🔔 การแจ้งเตือนใหม่จาก {forum}"
+      # ป้ายกำกับที่ใช้ร่วมกัน
+      view_post_button: "ดูโพสต์"
+      fallback_title: "การแจ้งเตือนใหม่"
+      # ข้อความยืนยันการเชื่อมต่อ
+      connection_success_header: "✅ เชื่อมต่อสำเร็จ"
+      connection_success_greeting_name: "สวัสดี {name}!"
+      connection_success_greeting: "สวัสดี!"
+      connection_success_body: "บัญชี LINE ของคุณเชื่อมต่อกับ {forum} (ชื่อผู้ใช้: {username}) เรียบร้อยแล้ว"
+      connection_success_features_intro: "คุณจะได้รับการแจ้งเตือนจากฟอรัมผ่าน LINE เมื่อมีคน:"
+      connection_success_feature_mention: "💬 กล่าวถึงโพสต์ของคุณ"
+      connection_success_feature_user_mention: "📣 กล่าวถึงคุณ"
+      connection_success_feature_like: "❤️ ถูกใจโพสต์ของคุณ"
+      connection_success_feature_new_post: "🔔 โพสต์ใหม่ในการสนทนาที่คุณติดตาม"
+      connection_success_settings_hint: "คุณสามารถจัดการการแจ้งเตือนได้ที่หน้า Settings ของฟอรัม"
+      connection_success_open_forum: "เปิด {forum}"
+      connection_success_alt_text: "✅ เชื่อมต่อบัญชี LINE กับ {forum} สำเร็จแล้ว"
