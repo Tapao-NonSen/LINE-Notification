@@ -58,10 +58,47 @@ app.initializers.add('tapao-line-notification', () => {
       help: app.translator.trans('tapao-line-notification.admin.settings.use_first_image_as_thumbnail_help'),
       type: 'boolean',
     })
-    .registerSetting({
-      setting: 'tapao-line-notification.disabledNotificationTypes',
-      label: app.translator.trans('tapao-line-notification.admin.settings.disabled_notification_types_label'),
-      help: app.translator.trans('tapao-line-notification.admin.settings.disabled_notification_types_help'),
-      type: 'text',
+    .registerSetting(function () {
+      const disabledTypesStream = this.setting('tapao-line-notification.disabledNotificationTypes');
+      const currentDisabled = (disabledTypesStream() || '').split(',').map(s => s.trim()).filter(Boolean);
+      const availableTypes = app.data.lineNotificationTypes || [];
+
+      return (
+        <div className="Form-group">
+          <label>{app.translator.trans('tapao-line-notification.admin.settings.disabled_notification_types_label')}</label>
+          <div className="helpText" style={{ marginBottom: '10px' }}>
+            {app.translator.trans('tapao-line-notification.admin.settings.disabled_notification_types_help')}
+          </div>
+          {availableTypes.map(type => {
+            const isChecked = currentDisabled.includes(type);
+            const translationKey = `tapao-line-notification.lib.line_message.notification_${type}`;
+            const label = app.translator.translations[translationKey] ? app.translator.trans(translationKey) : type;
+
+            return (
+              <div style={{ marginBottom: '5px' }}>
+                <label className="checkbox">
+                  <input
+                    type="checkbox"
+                    checked={isChecked}
+                    onchange={e => {
+                      let nextDisabled;
+                      if (e.target.checked) {
+                        nextDisabled = [...currentDisabled, type];
+                      } else {
+                        nextDisabled = currentDisabled.filter(t => t !== type);
+                      }
+                      disabledTypesStream(nextDisabled.join(','));
+                    }}
+                  />
+                  {label}
+                </label>
+              </div>
+            );
+          })}
+          {availableTypes.length === 0 && (
+            <p className="helpText">No notification types registered.</p>
+          )}
+        </div>
+      );
     });
 });

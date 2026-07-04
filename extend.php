@@ -20,7 +20,10 @@ $extenders = [
 
     (new Extend\Frontend('admin'))
         ->js(__DIR__ . '/js/dist/admin.js')
-        ->css(__DIR__ . '/less/admin.less'),
+        ->css(__DIR__ . '/less/admin.less')
+        ->content(function (\Flarum\Frontend\Document $document) {
+            $document->payload['lineNotificationTypes'] = array_keys(LineNotificationDriver::$registeredTypes);
+        }),
 
     new Extend\Locales(__DIR__ . '/locale'),
 

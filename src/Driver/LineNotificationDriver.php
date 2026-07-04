@@ -19,6 +19,8 @@ use Tapao\LineNotification\Formatter\FlexMessageFormatter;
  */
 class LineNotificationDriver implements NotificationDriverInterface
 {
+    public static array $registeredTypes = [];
+
     public function __construct(
         private readonly LineApiClient               $lineClient,
         private readonly SettingsRepositoryInterface $settings,
@@ -81,6 +83,8 @@ class LineNotificationDriver implements NotificationDriverInterface
     public function registerType(string $blueprintClass, array $driversEnabledByDefault): void
     {
         $type = $blueprintClass::getType();
+        self::$registeredTypes[$type] = $blueprintClass;
+
         $disabledTypes = $this->settings->get('tapao-line-notification.disabledNotificationTypes');
         if ($disabledTypes) {
             $disabledArray = array_map('trim', explode(',', $disabledTypes));
