@@ -45,11 +45,12 @@ $extenders = [
 
     // ──────────────── Notification Driver ────────────────
     (new Extend\Notification())
-        ->driver('line', LineNotificationDriver::class)
-        ->type(PostMentionedBlueprint::class, ['line'])
-        ->type(UserMentionedBlueprint::class, ['line'])
-        ->type(PostLikedBlueprint::class, ['line'])
-        ->type(NewPostBlueprint::class, ['line']),
+        ->driver('line', LineNotificationDriver::class, [
+            PostMentionedBlueprint::class,
+            UserMentionedBlueprint::class,
+            PostLikedBlueprint::class,
+            NewPostBlueprint::class,
+        ]),
 
     // ──────────────── User Model — date casts ────────────────
     (new Extend\Model(\Flarum\User\User::class))
