@@ -6,7 +6,6 @@ use Flarum\Notification\Driver\NotificationDriverInterface;
 use Flarum\Notification\Blueprint\BlueprintInterface;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\User;
-use Illuminate\Support\Collection;
 use Psr\Log\LoggerInterface;
 use Tapao\LineNotification\Api\LineApiClient;
 use Tapao\LineNotification\Exceptions\LineUserNotFoundException;
@@ -30,7 +29,7 @@ class LineNotificationDriver implements NotificationDriverInterface
     /**
      * Send the notification blueprint to each user who has LINE linked.
      */
-    public function send(BlueprintInterface $blueprint, Collection $users): void
+    public function send(BlueprintInterface $blueprint, array $users): void
     {
         $accessToken = $this->settings->get('tapao-line-notification.messagingAccessToken');
 
@@ -69,4 +68,14 @@ class LineNotificationDriver implements NotificationDriverInterface
     {
         return false;
     }
+
+    /**
+     * Register a notification type with this driver.
+     * Required by Flarum\Notification\Driver\NotificationDriverInterface.
+     */
+    public function registerType(string $blueprintClass, array $driversEnabledByDefault): void
+    {
+        // No custom logic needed here for the LINE driver.
+    }
 }
+
