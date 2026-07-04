@@ -29,6 +29,8 @@ tapao-line-notification:
       flex_button_color_help: "Color of the action button in the notification. Default: #06C755 (LINE Green)."
       flex_title_color_label: "Flex Message Title Color"
       flex_title_color_help: "Text color of the discussion title in the notification body. Default: #111111."
+      use_first_image_as_thumbnail_label: "Use First Image as Thumbnail"
+      use_first_image_as_thumbnail_help: "If the post contains an image, use the first image as the Flex Message hero thumbnail."
   lib:
     notification:
       line_driver_label: "LINE"

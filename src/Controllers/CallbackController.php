@@ -131,6 +131,9 @@ class CallbackController implements RequestHandlerInterface
             $buttonLabel = mb_substr($buttonLabel, 0, 19) . '…';
         }
 
+        $headerColor = $this->settings->get('tapao-line-notification.flexHeaderColor') ?: '#06C755';
+        $buttonColor = $this->settings->get('tapao-line-notification.flexButtonColor') ?: '#06C755';
+
         $messages = [
             [
                 'type'    => 'flex',
@@ -140,7 +143,7 @@ class CallbackController implements RequestHandlerInterface
                     'header' => [
                         'type'            => 'box',
                         'layout'          => 'vertical',
-                        'backgroundColor' => '#06C755',
+                        'backgroundColor' => $headerColor,
                         'contents'        => [
                             [
                                 'type'   => 'text',
@@ -204,7 +207,7 @@ class CallbackController implements RequestHandlerInterface
                             [
                                 'type'   => 'button',
                                 'style'  => 'primary',
-                                'color'  => '#06C755',
+                                'color'  => $buttonColor,
                                 'action' => [
                                     'type'  => 'uri',
                                     'label' => $buttonLabel,

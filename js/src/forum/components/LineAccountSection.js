@@ -7,7 +7,7 @@ import Stream from 'flarum/common/utils/Stream';
 /**
  * LineAccountSection
  *
- * Renders into the Account section of Settings → Accounts:
+ * Renders into the Account section of Settings:
  *  - When not connected: description + "Connect LINE" button
  *  - When connected:     "Connected as {displayName}" info + "Disconnect" button
  */
@@ -41,12 +41,12 @@ export default class LineAccountSection extends Component {
     const alert        = this.alert();
 
     return (
-      <div className="LineAccountSection">
-        <h3 className="LineAccountSection-heading">
+      <fieldset className="SettingsPage-line">
+        <legend>
           <i className="fab fa-line" />
           {' '}
           {app.translator.trans('tapao-line-notification.forum.settings.line_section_heading')}
-        </h3>
+        </legend>
 
         {alert && (
           <Alert type={alert.type} dismissible onDismiss={() => this.alert(null)}>
@@ -55,13 +55,14 @@ export default class LineAccountSection extends Component {
         )}
 
         {isConnected ? (
-          <div className="LineAccountSection-connected">
-            <div className="LineAccountSection-status">
+          <div className="Form-group">
+            <p>
               <span className="LineAccountSection-statusDot connected" />
+              {' '}
               {app.translator.trans('tapao-line-notification.forum.settings.line_connected_as', { name: displayName })}
-            </div>
+            </p>
             <Button
-              className="Button Button--danger LineAccountSection-btn"
+              className="Button Button--danger"
               loading={isLoading}
               onclick={this.disconnect.bind(this)}
             >
@@ -69,12 +70,12 @@ export default class LineAccountSection extends Component {
             </Button>
           </div>
         ) : (
-          <div className="LineAccountSection-disconnected">
-            <p className="LineAccountSection-desc">
+          <div className="Form-group">
+            <p className="helpText">
               {app.translator.trans('tapao-line-notification.forum.settings.line_linking_description')}
             </p>
             <Button
-              className="Button Button--primary LineAccountSection-btn LineAccountSection-btn--line"
+              className="Button Button--primary LineAccountSection-btn--line"
               loading={isLoading}
               onclick={this.connect.bind(this)}
             >
@@ -84,7 +85,7 @@ export default class LineAccountSection extends Component {
             </Button>
           </div>
         )}
-      </div>
+      </fieldset>
     );
   }
 
@@ -124,3 +125,4 @@ export default class LineAccountSection extends Component {
     }
   }
 }
+

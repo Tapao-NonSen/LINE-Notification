@@ -51,5 +51,11 @@ app.initializers.add('tapao-line-notification', () => {
       help: app.translator.trans('tapao-line-notification.admin.settings.flex_title_color_help'),
       type: 'color-preview',
       placeholder: '#111111',
+    })
+    .registerSetting({
+      setting: 'tapao-line-notification.useFirstImageAsThumbnail',
+      label: app.translator.trans('tapao-line-notification.admin.settings.use_first_image_as_thumbnail_label'),
+      help: app.translator.trans('tapao-line-notification.admin.settings.use_first_image_as_thumbnail_help'),
+      type: 'boolean',
     });
 });

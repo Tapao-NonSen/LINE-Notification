@@ -46,10 +46,11 @@ class FlexMessageFormatter
         $subject = $blueprint->getSubject();
         $type    = $blueprint->getType();
 
-        $title   = $this->resolveTitle($subject);
-        $excerpt = $this->resolveExcerpt($subject);
-        $url     = $this->resolveUrl($subject);
-        $header  = $this->resolveHeaderLabel($type);
+        $title    = $this->resolveTitle($subject);
+        $excerpt  = $this->resolveExcerpt($subject);
+        $url      = $this->resolveUrl($subject);
+        $header   = $this->resolveHeaderLabel($type);
+        $imageUrl = $this->resolveImageUrl($subject);
 
         // Read button label from translations
         $buttonLabel = $this->trans('view_post_button');
@@ -57,7 +58,7 @@ class FlexMessageFormatter
             $buttonLabel = mb_substr($buttonLabel, 0, 19) . '…';
         }
 
-        return [$this->buildFlexMessage($header, $title, $excerpt, $url, $buttonLabel)];
+        return [$this->buildFlexMessage($header, $title, $excerpt, $url, $buttonLabel, $imageUrl)];
     }
 
     // ──────────────── Resolution helpers ────────────────
@@ -102,6 +103,28 @@ class FlexMessageFormatter
         return $baseUrl;
     }
 
+    private function resolveImageUrl(mixed $subject): ?string
+    {
+        if (!$this->settings->get('tapao-line-notification.useFirstImageAsThumbnail')) {
+            return null;
+        }
+
+        if ($subject instanceof Post) {
+            $html = $subject->formatContent();
+            if (preg_match('/<img[^>]+src="([^">]+)"/i', $html, $matches)) {
+                $url = $matches[1];
+                if (!preg_match('/^https?:\/\//i', $url)) {
+                    $baseUrl = rtrim($this->url->to('forum')->base(), '/');
+                    $url = ltrim($url, '/');
+                    return $baseUrl . '/' . $url;
+                }
+                return $url;
+            }
+        }
+
+        return null;
+    }
+
     private function resolveHeaderLabel(string $type): string
     {
         // Try a translation key specific to the notification type first,
@@ -138,7 +161,7 @@ class FlexMessageFormatter
 
     // ──────────────── Flex Message builder ────────────────
 
-    private function buildFlexMessage(string $header, string $title, string $excerpt, string $url, string $buttonLabel): array
+    private function buildFlexMessage(string $header, string $title, string $excerpt, string $url, string $buttonLabel, ?string $imageUrl = null): array
     {
         $bodyContents = [
             [
@@ -162,49 +185,61 @@ class FlexMessageFormatter
             ];
         }
 
-        return [
-            'type'    => 'flex',
-            'altText' => $header . ': ' . $title,
-            'contents' => [
-                'type'   => 'bubble',
-                'header' => [
-                    'type'            => 'box',
-                    'layout'          => 'vertical',
-                    'backgroundColor' => $this->headerColor(),
-                    'contents'        => [
-                        [
-                            'type'   => 'text',
-                            'text'   => $header,
-                            'color'  => self::WHITE,
-                            'size'   => 'sm',
-                            'weight' => 'bold',
-                            'wrap'   => true,
-                        ],
+        $bubble = [
+            'type'   => 'bubble',
+            'header' => [
+                'type'            => 'box',
+                'layout'          => 'vertical',
+                'backgroundColor' => $this->headerColor(),
+                'contents'        => [
+                    [
+                        'type'   => 'text',
+                        'text'   => $header,
+                        'color'  => self::WHITE,
+                        'size'   => 'sm',
+                        'weight' => 'bold',
+                        'wrap'   => true,
                     ],
                 ],
-                'body' => [
-                    'type'     => 'box',
-                    'layout'   => 'vertical',
-                    'spacing'  => 'sm',
-                    'contents' => $bodyContents,
-                ],
-                'footer' => [
-                    'type'     => 'box',
-                    'layout'   => 'vertical',
-                    'contents' => [
-                        [
-                            'type'   => 'button',
-                            'style'  => 'primary',
-                            'color'  => $this->buttonColor(),
-                            'action' => [
-                                'type'  => 'uri',
-                                'label' => $buttonLabel,
-                                'uri'   => $url,
-                            ],
+            ],
+            'body' => [
+                'type'     => 'box',
+                'layout'   => 'vertical',
+                'spacing'  => 'sm',
+                'contents' => $bodyContents,
+            ],
+            'footer' => [
+                'type'     => 'box',
+                'layout'   => 'vertical',
+                'contents' => [
+                    [
+                        'type'   => 'button',
+                        'style'  => 'primary',
+                        'color'  => $this->buttonColor(),
+                        'action' => [
+                            'type'  => 'uri',
+                            'label' => $buttonLabel,
+                            'uri'   => $url,
                         ],
                     ],
                 ],
             ],
+        ];
+
+        if ($imageUrl) {
+            $bubble['hero'] = [
+                'type' => 'image',
+                'url' => $imageUrl,
+                'size' => 'full',
+                'aspectRatio' => '20:13',
+                'aspectMode' => 'cover',
+            ];
+        }
+
+        return [
+            'type'    => 'flex',
+            'altText' => $header . ': ' . $title,
+            'contents' => $bubble,
         ];
     }
 
