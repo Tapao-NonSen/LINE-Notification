@@ -8,7 +8,7 @@ A Flarum extension that lets forum users connect their LINE account and receive 
 
 - 🟢 **LINE OAuth connect/disconnect** — users link their LINE account from Settings
 - 🔔 **LINE push notifications** — mention, reply, like, new-post notifications delivered as **LINE Flex Messages**
-- 🎨 **NGBC Navy/Gold branding** — rich Flex Message cards with the forum's color scheme
+- 🎨 **Custom branding** — rich Flex Message cards with the forum's color scheme
 - ⚙️ **Admin settings** — Channel ID, Channel Secret, Messaging API Token configurable from Flarum Admin
 - 🛡️ **Auto-cleanup** — if a user blocks the LINE bot, their LINE data is automatically cleared
 - 🔗 **Webhook endpoint** — handles LINE unfollow/block events
