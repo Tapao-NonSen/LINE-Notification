@@ -40,45 +40,39 @@ export default class LineAccountSection extends Component {
     const isLoading    = this.loading();
     const alert        = this.alert();
 
-    return (
-      <div className="LineAccountSection">
-
-        {alert && (
-          <Alert type={alert.type} dismissible onDismiss={() => this.alert(null)}>
-            {alert.message}
-          </Alert>
-        )}
-
-        {isConnected ? (
-          <div className="Form-group">
-            <p>
-              <span className="LineAccountSection-statusDot connected" />
-              {' '}
-              {app.translator.trans('tapao-line-notification.forum.settings.line_connected_as', { name: displayName })}
-            </p>
-            <Button
-              className="Button Button--danger"
-              loading={isLoading}
-              onclick={this.disconnect.bind(this)}
-            >
-              {app.translator.trans('tapao-line-notification.forum.settings.line_disconnect_button')}
-            </Button>
-          </div>
-        ) : (
-          <div className="Form-group">
-            <Button
-              className="Button Button--primary LineAccountSection-btn--line"
-              loading={isLoading}
-              onclick={this.connect.bind(this)}
-            >
-              <i className="fab fa-line" />
-              {' '}
-              {app.translator.trans('tapao-line-notification.forum.settings.line_connect_button')}
-            </Button>
-          </div>
-        )}
-      </div>
-    );
+    return [
+      alert ? (
+        <Alert type={alert.type} dismissible onDismiss={() => this.alert(null)}>
+          {alert.message}
+        </Alert>
+      ) : null,
+      isConnected ? (
+        <Button
+          className="Button"
+          loading={isLoading}
+          onclick={this.disconnect.bind(this)}
+        >
+          <i className="fab fa-line" />
+          {' '}
+          {app.translator.trans('tapao-line-notification.forum.settings.line_connected_as', { name: displayName })}
+          {' ('}
+          <i className="fas fa-times" />
+          {' '}
+          {app.translator.trans('tapao-line-notification.forum.settings.line_disconnect_button')}
+          {')'}
+        </Button>
+      ) : (
+        <Button
+          className="Button Button--primary LineAccountSection-btn--line"
+          loading={isLoading}
+          onclick={this.connect.bind(this)}
+        >
+          <i className="fab fa-line" />
+          {' '}
+          {app.translator.trans('tapao-line-notification.forum.settings.line_connect_button')}
+        </Button>
+      )
+    ];
   }
 
   /**
