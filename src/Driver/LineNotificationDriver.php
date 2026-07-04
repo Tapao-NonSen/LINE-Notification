@@ -31,6 +31,15 @@ class LineNotificationDriver implements NotificationDriverInterface
      */
     public function send(BlueprintInterface $blueprint, array $users): void
     {
+        $type = $blueprint::getType();
+        $disabledTypes = $this->settings->get('tapao-line-notification.disabledNotificationTypes');
+        if ($disabledTypes) {
+            $disabledArray = array_map('trim', explode(',', $disabledTypes));
+            if (in_array($type, $disabledArray)) {
+                return;
+            }
+        }
+
         $accessToken = $this->settings->get('tapao-line-notification.messagingAccessToken');
 
         if (empty($accessToken)) {
@@ -71,7 +80,16 @@ class LineNotificationDriver implements NotificationDriverInterface
 
     public function registerType(string $blueprintClass, array $driversEnabledByDefault): void
     {
-        $key = User::getNotificationPreferenceKey($blueprintClass::getType(), 'line');
+        $type = $blueprintClass::getType();
+        $disabledTypes = $this->settings->get('tapao-line-notification.disabledNotificationTypes');
+        if ($disabledTypes) {
+            $disabledArray = array_map('trim', explode(',', $disabledTypes));
+            if (in_array($type, $disabledArray)) {
+                return;
+            }
+        }
+
+        $key = User::getNotificationPreferenceKey($type, 'line');
         $default = in_array('line', $driversEnabledByDefault);
 
         // Support both Flarum 1.x (registerPreference) and 2.x (addPreference)

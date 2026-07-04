@@ -31,6 +31,8 @@ tapao-line-notification:
       flex_title_color_help: "สีของข้อความหัวข้อการสนทนาในส่วนเนื้อหา ค่าเริ่มต้น: #111111"
       use_first_image_as_thumbnail_label: "ใช้รูปภาพแรกเป็นรูปขนาดย่อ"
       use_first_image_as_thumbnail_help: "หากโพสต์มีรูปภาพ ให้ใช้รูปภาพแรกเป็นรูปขนาดย่อในส่วนของฮีโร่ของ Flex Message"
+      disabled_notification_types_label: "ประเภทการแจ้งเตือนที่ปิดใช้งาน"
+      disabled_notification_types_help: "ระบุประเภทการแจ้งเตือนที่ต้องการปิดใช้งานผ่าน LINE โดยคั่นด้วยเครื่องหมายจุลภาค (เช่น <code>postMentioned, postLiked, newPost, discussionCreated</code>) ซึ่งจะซ่อนตัวเลือกประเภทเหล่านี้ในหน้าตั้งค่าของผู้ใช้ด้วย"
   lib:
     notification:
       line_driver_label: "LINE"

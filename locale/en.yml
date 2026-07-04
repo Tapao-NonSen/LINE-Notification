@@ -31,6 +31,8 @@ tapao-line-notification:
       flex_title_color_help: "Text color of the discussion title in the notification body. Default: #111111."
       use_first_image_as_thumbnail_label: "Use First Image as Thumbnail"
       use_first_image_as_thumbnail_help: "If the post contains an image, use the first image as the Flex Message hero thumbnail."
+      disabled_notification_types_label: "Disabled Notification Types"
+      disabled_notification_types_help: "Enter a comma-separated list of notification types you want to prevent from being sent via LINE (e.g., <code>postMentioned, postLiked, newPost, discussionCreated</code>). This will also hide the toggle for these types on the user's settings page."
   lib:
     notification:
       line_driver_label: "LINE"

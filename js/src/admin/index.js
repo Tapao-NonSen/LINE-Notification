@@ -57,5 +57,11 @@ app.initializers.add('tapao-line-notification', () => {
       label: app.translator.trans('tapao-line-notification.admin.settings.use_first_image_as_thumbnail_label'),
       help: app.translator.trans('tapao-line-notification.admin.settings.use_first_image_as_thumbnail_help'),
       type: 'boolean',
+    })
+    .registerSetting({
+      setting: 'tapao-line-notification.disabledNotificationTypes',
+      label: app.translator.trans('tapao-line-notification.admin.settings.disabled_notification_types_label'),
+      help: app.translator.trans('tapao-line-notification.admin.settings.disabled_notification_types_help'),
+      type: 'text',
     });
 });
