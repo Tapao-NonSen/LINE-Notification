@@ -131,28 +131,6 @@ User clicks "Connect LINE" in Settings
 
 ---
 
-## Notification Types Supported
-
-| Type | Blueprint Class | Phase |
-|---|---|---|
-| Post mentioned | `PostMentionedBlueprint` | 3 |
-| User mentioned | `UserMentionedBlueprint` | 3 |
-| Post liked | `PostLikedBlueprint` | 3 |
-| New post (subscription) | `NewPostBlueprint` | 3 |
-
-Add more types by extending `extend.php` with additional `->type()` calls.
-
----
-
-## Open Items (from plan)
-
-- [ ] LINE Developers Console credentials need to be configured
-- [ ] Confirm full list of notification types for Phase 4 expansion
-- [ ] Test Flex Message templates on actual LINE client
-- [ ] Register webhook URL in LINE console for Phase 5 unfollow handling
-
----
-
 ## License
 
 MIT
