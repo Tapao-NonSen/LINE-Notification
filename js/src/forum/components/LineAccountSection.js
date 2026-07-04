@@ -47,20 +47,23 @@ export default class LineAccountSection extends Component {
         </Alert>
       ) : null,
       isConnected ? (
-        <Button
-          className="Button"
-          loading={isLoading}
-          onclick={this.disconnect.bind(this)}
-        >
-          <i className="fab fa-line" />
-          {' '}
-          {app.translator.trans('tapao-line-notification.forum.settings.line_connected_as', { name: displayName })}
-          {' ('}
-          <i className="fas fa-times" />
-          {' '}
-          {app.translator.trans('tapao-line-notification.forum.settings.line_disconnect_button')}
-          {')'}
-        </Button>
+        <div className="ButtonGroup">
+          <Button
+            className="Button LineAccountSection-btn--line"
+            style={{ pointerEvents: 'none' }}
+          >
+            <i className="fab fa-line" />
+            {' '}
+            {app.translator.trans('tapao-line-notification.forum.settings.line_connected_as', { name: displayName })}
+          </Button>
+          <Button
+            className="Button Button--icon"
+            loading={isLoading}
+            onclick={this.disconnect.bind(this)}
+            icon="fas fa-times"
+            aria-label={app.translator.trans('tapao-line-notification.forum.settings.line_disconnect_button')}
+          />
+        </div>
       ) : (
         <Button
           className="Button Button--primary LineAccountSection-btn--line"
