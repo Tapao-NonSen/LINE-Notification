@@ -28,13 +28,13 @@ $extenders = [
     (new Extend\Settings())
         // LINE API credentials
         ->serializeToForum('tapao-line-notification.loginChannelId', 'tapao-line-notification.loginChannelId')
-        ->serializeToAdmin('tapao-line-notification.loginChannelSecret', 'tapao-line-notification.loginChannelSecret')
-        ->serializeToAdmin('tapao-line-notification.messagingAccessToken', 'tapao-line-notification.messagingAccessToken')
-        ->serializeToAdmin('tapao-line-notification.messagingChannelSecret', 'tapao-line-notification.messagingChannelSecret')
+        ->serializeToForum('tapao-line-notification.loginChannelSecret', 'tapao-line-notification.loginChannelSecret')
+        ->serializeToForum('tapao-line-notification.messagingAccessToken', 'tapao-line-notification.messagingAccessToken')
+        ->serializeToForum('tapao-line-notification.messagingChannelSecret', 'tapao-line-notification.messagingChannelSecret')
         // Flex Message branding
-        ->serializeToAdmin('tapao-line-notification.flexHeaderColor', 'tapao-line-notification.flexHeaderColor')
-        ->serializeToAdmin('tapao-line-notification.flexButtonColor', 'tapao-line-notification.flexButtonColor')
-        ->serializeToAdmin('tapao-line-notification.flexTitleColor', 'tapao-line-notification.flexTitleColor'),
+        ->serializeToForum('tapao-line-notification.flexHeaderColor', 'tapao-line-notification.flexHeaderColor')
+        ->serializeToForum('tapao-line-notification.flexButtonColor', 'tapao-line-notification.flexButtonColor')
+        ->serializeToForum('tapao-line-notification.flexTitleColor', 'tapao-line-notification.flexTitleColor'),
 
     // ──────────────── API Routes ────────────────
     (new Extend\Routes('api'))

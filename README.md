@@ -20,7 +20,7 @@ A Flarum extension that lets forum users connect their LINE account and receive 
 ```bash
 composer require tapao/line-notification
 php flarum migrate
-php flarum assets:publish
+php flarum cache:clear
 ```
 
 ---
