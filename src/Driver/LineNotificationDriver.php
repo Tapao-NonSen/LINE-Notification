@@ -96,12 +96,7 @@ class LineNotificationDriver implements NotificationDriverInterface
         $key = User::getNotificationPreferenceKey($type, 'line');
         $default = in_array('line', $driversEnabledByDefault);
 
-        // Support both Flarum 1.x (registerPreference) and 2.x (addPreference)
-        if (method_exists(User::class, 'addPreference')) {
-            User::addPreference($key, 'boolval', $default);
-        } elseif (method_exists(User::class, 'registerPreference')) {
-            User::registerPreference($key, 'boolval', $default);
-        }
+        User::addPreference($key, 'boolval', $default);
     }
 }
 

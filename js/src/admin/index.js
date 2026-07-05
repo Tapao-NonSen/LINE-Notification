@@ -71,7 +71,13 @@ app.initializers.add('tapao-line-notification', () => {
           </div>
           {availableTypes.map(type => {
             const isChecked = currentDisabled.includes(type);
-            const translationKey = `tapao-line-notification.lib.line_message.notification_${type}`;
+            const translationMap = {
+              postMentioned: 'flarum-mentions.forum.settings.notify_post_mentioned_label',
+              userMentioned: 'flarum-mentions.forum.settings.notify_user_mentioned_label',
+              postLiked: 'flarum-likes.forum.settings.notify_post_liked_label',
+              newPost: 'flarum-subscriptions.forum.settings.notify_new_post_label',
+            };
+            const translationKey = translationMap[type] || `tapao-line-notification.lib.line_message.notification_${type}`;
             const label = app.translator.translations[translationKey] ? app.translator.trans(translationKey) : type;
 
             return (

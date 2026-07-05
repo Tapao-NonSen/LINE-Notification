@@ -17,8 +17,16 @@ A Flarum extension that lets forum users connect their LINE account and receive 
 
 ## Installation
 
+### For Flarum 2.x (Recommended)
 ```bash
 composer require tapao/line-notification
+php flarum migrate
+php flarum cache:clear
+```
+
+### For Flarum 1.x
+```bash
+composer require tapao/line-notification:^1.1
 php flarum migrate
 php flarum cache:clear
 ```

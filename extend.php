@@ -5,14 +5,15 @@ use Tapao\LineNotification\Controllers\ConnectController;
 use Tapao\LineNotification\Controllers\DisconnectController;
 use Tapao\LineNotification\Controllers\WebhookController;
 use Tapao\LineNotification\Driver\LineNotificationDriver;
-use Tapao\LineNotification\Listener\AddLineUserAttributes;
 use Flarum\Extend;
 use Flarum\Mentions\Notification\PostMentionedBlueprint;
 use Flarum\Mentions\Notification\UserMentionedBlueprint;
 use Flarum\Likes\Notification\PostLikedBlueprint;
 use Flarum\Subscriptions\Notification\NewPostBlueprint;
+use Flarum\Api\Resource\UserResource;
+use Flarum\Api\Schema\Attribute;
 
-$extenders = [
+return [
     // ──────────────── Assets / Frontend ────────────────
     (new Extend\Frontend('forum'))
         ->js(__DIR__ . '/js/dist/forum.js')
@@ -58,38 +59,22 @@ $extenders = [
     // ──────────────── User Model — date casts ────────────────
     (new Extend\Model(\Flarum\User\User::class))
         ->dateAttribute('line_linked_at'),
-];
 
-// ──────────────── User Serializer (expose LINE fields) ────────────────
-// Flarum 2.x removed Extend\ApiSerializer → use Extend\ApiResource instead.
-// Flarum 1.x has no Extend\ApiResource.
-// We detect at runtime which to register.
-
-if (class_exists(\Flarum\Api\Resource\UserResource::class)) {
-    // Flarum 2.x — use ApiResource extender
-    $extenders[] = (new Extend\ApiResource(\Flarum\Api\Resource\UserResource::class))
+    // ──────────────── User Serializer (expose LINE fields) ────────────────
+    // Flarum 2.x — ApiResource extender
+    (new Extend\ApiResource(UserResource::class))
         ->fields(fn () => [
-            \Flarum\Api\Schema\Attribute::make('lineUserId')
+            Attribute::make('lineUserId')
                 ->get(fn ($user) => $user->line_user_id)
                 ->writable(fn () => false),
-            \Flarum\Api\Schema\Attribute::make('lineDisplayName')
+            Attribute::make('lineDisplayName')
                 ->get(fn ($user) => $user->line_display_name)
                 ->writable(fn () => false),
-            \Flarum\Api\Schema\Attribute::make('lineLinkedAt')
+            Attribute::make('lineLinkedAt')
                 ->get(fn ($user) => $user->line_linked_at?->toIso8601String())
                 ->writable(fn () => false),
-        ]);
-} else {
-    // Flarum 1.x — use ApiSerializer extender
-    $extenders[] = (new Extend\ApiSerializer(\Flarum\Api\Serializer\CurrentUserSerializer::class))
-        ->attributes(AddLineUserAttributes::class);
-}
+        ]),
 
-// ──────────────── Database Migration (Flarum 2.x only) ────────────────
-// Flarum 1.x auto-discovers from migrations/ directory.
-// Flarum 2.x requires explicit Extend\Migration registration.
-if (class_exists(Extend\Migration::class)) {
-    $extenders[] = new Extend\Migration(__DIR__ . '/migrations');
-}
-
-return $extenders;
+    // ──────────────── Database Migrations ────────────────
+    new Extend\Migration(__DIR__ . '/migrations'),
+];
