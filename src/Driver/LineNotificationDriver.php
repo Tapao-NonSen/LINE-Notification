@@ -95,8 +95,6 @@ class LineNotificationDriver implements NotificationDriverInterface
 
         $key = User::getNotificationPreferenceKey($type, 'line');
         $default = in_array('line', $driversEnabledByDefault);
-
-        User::addPreference($key, 'boolval', $default);
     }
 }
 
