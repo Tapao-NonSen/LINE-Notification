@@ -5,7 +5,7 @@ import LineAccountSection from './components/LineAccountSection';
 
 app.initializers.add('tapao-line-notification', () => {
   // Inject LINE connect/disconnect section into the Account area of user Settings
-  extend('flarum/forum/components/SettingsPage', 'settingsItems', function (items) {
+  extend('flarum/forum/components/SettingsPage', 'accountItems', function (items) {
     items.add(
       'tapao-line-notification',
       <LineAccountSection />,
