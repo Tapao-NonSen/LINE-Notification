@@ -1,5 +1,6 @@
 import Extend from 'flarum/common/extenders';
 import app from 'flarum/admin/app';
+import buildSettingComponent from 'flarum/admin/utils/buildSettingComponent';
 
 export default [
   new Extend.Admin()
@@ -54,7 +55,7 @@ export default [
       help: app.translator.trans('tapao-line-notification.admin.settings.use_first_image_as_thumbnail_help'),
       type: 'boolean',
     }))
-    .setting(function () {
+    .setting(buildSettingComponent(function () {
       const disabledTypesStream = this.setting('tapao-line-notification.disabledNotificationTypes');
       const currentDisabled = (disabledTypesStream() || '').split(',').map(s => s.trim()).filter(Boolean);
       const availableTypes = app.data.lineNotificationTypes || [];
@@ -102,5 +103,5 @@ export default [
           )}
         </div>
       );
-    })
+    }))
 ];
