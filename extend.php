@@ -76,5 +76,4 @@ return [
         ]),
 
     // ──────────────── Database Migrations ────────────────
-    new Extend\Migration(__DIR__ . '/migrations'),
 ];
