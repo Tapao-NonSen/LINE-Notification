@@ -4,7 +4,7 @@ import buildSettingComponent from 'flarum/admin/utils/buildSettingComponent';
 export { default as extend } from './extend';
 
 app.initializers.add('tapao-line-notification', () => {
-  app.extensionData
+  app.registry
     .for('tapao-line-notification')
     .registerSetting({
       setting: 'tapao-line-notification.loginChannelId',
