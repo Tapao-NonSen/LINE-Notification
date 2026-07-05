@@ -58,7 +58,7 @@ return [
 
     // ──────────────── User Model — date casts ────────────────
     (new Extend\Model(\Flarum\User\User::class))
-        ->dateAttribute('line_linked_at'),
+        ->cast('line_linked_at', 'datetime'),
 
     // ──────────────── User Serializer (expose LINE fields) ────────────────
     // Flarum 2.x — ApiResource extender
