@@ -7,8 +7,6 @@ tapao-line-notification:
       line_connected_as: "เชื่อมต่อแล้วในชื่อ {name}"
       line_linking_description: "เชื่อมต่อบัญชี LINE ของคุณเพื่อรับการแจ้งเตือนจากฟอรัมผ่าน LINE"
       line_disconnect_confirm: "คุณต้องการยกเลิกการเชื่อมต่อบัญชี LINE ใช่หรือไม่?"
-      line_link_success: "เชื่อมต่อบัญชี LINE สำเร็จแล้ว"
-      line_disconnect_success: "ยกเลิกการเชื่อมต่อบัญชี LINE สำเร็จแล้ว"
       line_error: "เกิดข้อผิดพลาดในการเชื่อมต่อ LINE: {error}"
   admin:
     settings:

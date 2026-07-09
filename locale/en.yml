@@ -7,8 +7,6 @@ tapao-line-notification:
       line_connected_as: "Connected as {name}"
       line_linking_description: "Connect your LINE account to receive forum notifications via LINE."
       line_disconnect_confirm: "Are you sure you want to disconnect your LINE account?"
-      line_link_success: "LINE account connected successfully."
-      line_disconnect_success: "LINE account disconnected successfully."
       line_error: "Failed to connect LINE: {error}"
   admin:
     settings:
