@@ -82,9 +82,17 @@ tapao/line-notification/
 │   ├── Driver/
 │   │   └── LineNotificationDriver.php  # Flarum notification driver
 │   ├── Exceptions/
-│   │   └── LineUserNotFoundException.php
+│   │   ├── LineUserNotFoundException.php
+│   │   └── LinePushException.php       # 400 (bad payload) ≠ unlink
+│   ├── Extend/
+│   │   └── LineNotification.php        # ->resolver() extender for other extensions
 │   ├── Formatter/
-│   │   └── FlexMessageFormatter.php    # Builds LINE Flex Messages
+│   │   ├── FlexMessageFormatter.php    # Builds LINE Flex Messages
+│   │   ├── FlexTextSanitizer.php       # Guarantees a LINE-valid payload
+│   │   ├── NotificationContent.php     # DTO returned by resolvers
+│   │   └── Resolver/                   # Post/Discussion/User/Generic content resolvers
+│   ├── Provider/
+│   │   └── LineNotificationServiceProvider.php
 │   └── Listener/
 │       ├── AddLineUserAttributes.php   # Exposes LINE fields to API
 │       └── SaveLineUserAttributes.php
@@ -118,10 +126,57 @@ Flarum notification event
     → Extend\Notification()->type(Blueprint, ['line'])
     → LineNotificationDriver::send($blueprint, $users)
     → FlexMessageFormatter::format($blueprint)
+        → first matching ContentResolverInterface (Post → Discussion → User → your resolvers → Generic)
+        → FlexTextSanitizer (never-empty text, length caps, https-only hero image)
     → LineApiClient::pushMessage($lineUserId, $messages, $token)
     → LINE Messaging API
     → User's LINE app
 ```
+
+### Rendering notifications from other extensions
+
+Out of the box, `FlexMessageFormatter` renders `Post`, `Discussion`, and `User` notification subjects, and falls back to a generic resolver for anything else (it looks for a `discussion`/`post` relation or a `title`/`name` attribute, then a "From {user}" line — so the message is never blank).
+
+If your extension's blueprint subject needs a more specific title, excerpt, or deep link, register your own resolver:
+
+```php
+// your-extension/extend.php
+use Tapao\LineNotification\Extend\LineNotification;
+
+return [
+    (new LineNotification())
+        ->resolver(\YourExtension\LineContentResolver::class),
+];
+```
+
+```php
+namespace YourExtension;
+
+use Flarum\Notification\Blueprint\BlueprintInterface;
+use Tapao\LineNotification\Formatter\NotificationContent;
+use Tapao\LineNotification\Formatter\Resolver\ContentResolverInterface;
+
+class LineContentResolver implements ContentResolverInterface
+{
+    public function supports(BlueprintInterface $blueprint): bool
+    {
+        return $blueprint->getSubject() instanceof YourModel;
+    }
+
+    public function resolve(BlueprintInterface $blueprint): NotificationContent
+    {
+        $subject = $blueprint->getSubject();
+
+        return new NotificationContent(
+            title: $subject->title,
+            excerpt: $subject->summary,
+            url: '/your-route/' . $subject->id,
+        );
+    }
+}
+```
+
+Resolvers run in registration order — built-in Post → Discussion → User first, then resolvers registered via `->resolver()` in the order extensions load, and the generic fallback last regardless of registration order. Also add a `tapao-line-notification.lib.line_message.notification_<yourType>` translation key to give your notification type a custom header label — it's picked up automatically.
 
 ### OAuth Flow
 

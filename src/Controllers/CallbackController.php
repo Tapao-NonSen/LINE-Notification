@@ -13,6 +13,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 use Tapao\LineNotification\Api\LineApiClient;
+use Tapao\LineNotification\Formatter\FlexTextSanitizer;
 
 /**
  * CallbackController
@@ -123,13 +124,8 @@ class CallbackController implements RequestHandlerInterface
                          $t('connection_success_feature_like') . "\n" .
                          $t('connection_success_feature_new_post');
         $footerHint  = $t('connection_success_settings_hint');
-        $buttonLabel = $t('connection_success_open_forum', ['forum' => $forumTitle]);
-        $altText     = $t('connection_success_alt_text', ['forum' => $forumTitle]);
-
-        // Truncate button label to LINE's 20-char limit
-        if (mb_strlen($buttonLabel) > 20) {
-            $buttonLabel = mb_substr($buttonLabel, 0, 19) . '…';
-        }
+        $buttonLabel = FlexTextSanitizer::label($t('connection_success_open_forum', ['forum' => $forumTitle])) ?? 'Open';
+        $altText     = FlexTextSanitizer::altText($t('connection_success_alt_text', ['forum' => $forumTitle]));
 
         $headerColor = $this->settings->get('tapao-line-notification.flexHeaderColor') ?: '#06C755';
         $buttonColor = $this->settings->get('tapao-line-notification.flexButtonColor') ?: '#06C755';

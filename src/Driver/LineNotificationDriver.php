@@ -6,8 +6,10 @@ use Flarum\Notification\Driver\NotificationDriverInterface;
 use Flarum\Notification\Blueprint\BlueprintInterface;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\User;
+use Illuminate\Contracts\Translation\Translator;
 use Psr\Log\LoggerInterface;
 use Tapao\LineNotification\Api\LineApiClient;
+use Tapao\LineNotification\Exceptions\LinePushException;
 use Tapao\LineNotification\Exceptions\LineUserNotFoundException;
 use Tapao\LineNotification\Formatter\FlexMessageFormatter;
 
@@ -26,6 +28,7 @@ class LineNotificationDriver implements NotificationDriverInterface
         private readonly SettingsRepositoryInterface $settings,
         private readonly FlexMessageFormatter        $formatter,
         private readonly LoggerInterface             $logger,
+        private readonly Translator                  $translator,
     ) {}
 
     /**
@@ -49,11 +52,16 @@ class LineNotificationDriver implements NotificationDriverInterface
             return;
         }
 
+        $requestLocale = $this->translator->getLocale();
+        $defaultLocale = $this->settings->get('default_locale', $requestLocale);
+
         /** @var User $user */
         foreach ($users as $user) {
             if (empty($user->line_user_id)) {
                 continue;
             }
+
+            $this->translator->setLocale($user->getPreference('locale') ?: $defaultLocale);
 
             try {
                 $messages = $this->formatter->format($blueprint);
@@ -65,8 +73,13 @@ class LineNotificationDriver implements NotificationDriverInterface
                 $user->line_display_name = null;
                 $user->line_linked_at    = null;
                 $user->save();
+            } catch (LinePushException $e) {
+                // Our payload was malformed — the user's LINE link is fine, do not unlink.
+                $this->logger->error('[LINE] Payload rejected for user ' . $user->id . ': ' . $e->getMessage());
             } catch (\Throwable $e) {
                 $this->logger->error('[LINE] Unexpected error sending to user ' . $user->id . ': ' . $e->getMessage());
+            } finally {
+                $this->translator->setLocale($requestLocale);
             }
         }
     }

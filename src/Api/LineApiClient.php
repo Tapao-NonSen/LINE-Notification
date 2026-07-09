@@ -100,20 +100,34 @@ class LineApiClient
             return true;
         } catch (ClientException $e) {
             $status = $e->getResponse()->getStatusCode();
+            $body   = (string) $e->getResponse()->getBody();
 
             // 429: Rate limited — caller should back off
             if ($status === 429) {
-                $this->logger->warning('[LINE] Push rate-limited for user ' . $lineUserId);
+                $this->logger->warning('[LINE] Push rate-limited for user ' . $lineUserId . ': ' . $body);
                 return false;
             }
 
-            // 400 / 403: Invalid token or user blocked bot — signal caller to clear line_user_id
-            if (in_array($status, [400, 403], true)) {
-                $this->logger->warning('[LINE] Push rejected (' . $status . ') for user ' . $lineUserId . ' — token may be invalid or user blocked the bot.');
+            // 403: Invalid token or user blocked the bot — signal caller to clear line_user_id
+            if ($status === 403) {
+                $this->logger->warning('[LINE] Push rejected (403) for user ' . $lineUserId . ' — token may be invalid or user blocked the bot: ' . $body);
                 throw new \Tapao\LineNotification\Exceptions\LineUserNotFoundException($lineUserId);
             }
 
-            $this->logger->error('[LINE] Push failed (' . $status . ') for user ' . $lineUserId . ': ' . $e->getMessage());
+            // 400: Malformed payload — the account is fine, our message is not.
+            // Only treat it as an unreachable user if LINE explicitly rejects
+            // the "to" (recipient) field itself.
+            if ($status === 400) {
+                $this->logger->error('[LINE] Push rejected (400) for user ' . $lineUserId . ': ' . $body);
+
+                if (preg_match('/"property"\s*:\s*"to"/i', $body)) {
+                    throw new \Tapao\LineNotification\Exceptions\LineUserNotFoundException($lineUserId);
+                }
+
+                throw new \Tapao\LineNotification\Exceptions\LinePushException($lineUserId, $body);
+            }
+
+            $this->logger->error('[LINE] Push failed (' . $status . ') for user ' . $lineUserId . ': ' . $body);
             return false;
         } catch (\Throwable $e) {
             $this->logger->error('[LINE] Push unexpected error for user ' . $lineUserId . ': ' . $e->getMessage());

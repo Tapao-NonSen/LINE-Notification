@@ -21,7 +21,6 @@ export default class LineAccountSection extends Component {
     // Check for redirect params (after OAuth callback)
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('line_linked') === '1') {
-      this.alert({ type: 'success', message: app.translator.trans('tapao-line-notification.forum.settings.line_link_success') });
       // Clean up URL
       window.history.replaceState({}, '', window.location.pathname);
     } else if (urlParams.get('line_error')) {
@@ -104,8 +103,6 @@ export default class LineAccountSection extends Component {
 
       // Refresh user attributes from server
       await app.store.find('users', app.session.user.id());
-
-      this.alert({ type: 'success', message: app.translator.trans('tapao-line-notification.forum.settings.line_disconnect_success') });
     } catch (e) {
       this.alert({ type: 'error', message: e.message || 'An error occurred.' });
     } finally {

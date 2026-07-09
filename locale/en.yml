@@ -47,6 +47,10 @@ tapao-line-notification:
       # Shared labels
       view_post_button: "View Post"
       fallback_title: "New Notification"
+      # Used by GenericContentResolver when a third-party extension's
+      # notification subject has no title/discussion/post to resolve —
+      # keeps the message body from ever being blank.
+      notification_from_user: "From {user}"
       # Connection confirmation message
       connection_success_header: "✅ Connection Successful"
       connection_success_greeting_name: "Hello {name}!"

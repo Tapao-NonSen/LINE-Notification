@@ -5,6 +5,7 @@ use Tapao\LineNotification\Controllers\ConnectController;
 use Tapao\LineNotification\Controllers\DisconnectController;
 use Tapao\LineNotification\Controllers\WebhookController;
 use Tapao\LineNotification\Driver\LineNotificationDriver;
+use Tapao\LineNotification\Provider\LineNotificationServiceProvider;
 use Flarum\Extend;
 use Flarum\Mentions\Notification\PostMentionedBlueprint;
 use Flarum\Mentions\Notification\UserMentionedBlueprint;
@@ -14,6 +15,13 @@ use Flarum\Api\Resource\UserResource;
 use Flarum\Api\Schema\Attribute;
 
 return [
+    // ──────────────── Service Providers ────────────────
+    // Must be registered first: binds 'tapao-line-notification.resolvers'
+    // before any third-party Extend\LineNotification::resolver() call
+    // extends that container key.
+    (new Extend\ServiceProvider())
+        ->register(LineNotificationServiceProvider::class),
+
     // ──────────────── Assets / Frontend ────────────────
     (new Extend\Frontend('forum'))
         ->js(__DIR__ . '/js/dist/forum.js')

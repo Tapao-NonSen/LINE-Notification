@@ -47,6 +47,9 @@ tapao-line-notification:
       # ป้ายกำกับที่ใช้ร่วมกัน
       view_post_button: "ดูโพสต์"
       fallback_title: "การแจ้งเตือนใหม่"
+      # ใช้เมื่อ GenericContentResolver ไม่พบหัวข้อ/การสนทนา/โพสต์จาก
+      # ส่วนขยายอื่น เพื่อไม่ให้เนื้อหาข้อความว่างเปล่า
+      notification_from_user: "จาก {user}"
       # ข้อความยืนยันการเชื่อมต่อ
       connection_success_header: "✅ เชื่อมต่อสำเร็จ"
       connection_success_greeting_name: "สวัสดี {name}!"
